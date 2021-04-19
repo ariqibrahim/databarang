@@ -1,0 +1,141 @@
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Catatan Pengeluaran</title>
+  <link href="/assets/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+  <div class="container">
+    <h2>Catatan Pengeluaran</h2>
+		<button class="btn btn-success" data-toggle="modal" data-target="#myModalAdd">Tambah Pengeluaran Terkini</button>
+    <table class="table table-striped" id="mytable">
+      <thead>
+        <tr>
+          <th>Pengeluaran ID</th>
+          <th>Nama Pengeluaran</th>
+          <th>Pengeluaran (Rupiah)</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+         {{#each results}}
+        <tr>
+          <td>{{ pengeluaran_id }}</td>
+          <td>{{ pengeluaran_name }}</td>
+          <td>{{ pengeluaran_price }}</td>
+          <td>
+            <a href="javascript:void(0);" class="btn btn-sm btn-info edit" data-id="{{ pengeluaran_id }}" data-pengeluaran_name="{{ pengeluaran_name }}" data-pengeluaran_price="{{ pengeluaran_price }}">Edit</a>
+            <a href="javascript:void(0);" class="btn btn-sm btn-danger delete" data-id="{{ pengeluaran_id }}">Delete</a>
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+
+	<!-- Add New Product Modal-->
+	  <form action="/save" method="post">
+        <div class="modal fade" id="myModalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+         <div class="modal-dialog" role="document">
+           <div class="modal-content">
+             <div class="modal-header">
+               <h5 class="modal-title" id="exampleModalLabel">Tambahkan Pengeluaran</h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                 <span aria-hidden="true">&times;</span>
+               </button>
+             </div>
+             <div class="modal-body">
+               <div class="form-group">
+                   <input type="text" name="pengeluaran_name" class="form-control" placeholder="Nama Pengeluaran" required>
+               </div>
+
+               <div class="form-group">
+                   <input type="text" name="pengeluaran_price" class="form-control" placeholder="Pengeluaran (Rupiah)" required>
+               </div>
+             </div>
+             <div class="modal-footer">
+               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-primary">Save</button>
+             </div>
+           </div>
+         </div>
+        </div>
+	 </form>
+
+	 <!-- Edit Product Modal-->
+   <form action="/update" method="post">
+       <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Edit Pengeluaran</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                  <input type="text" name="pengeluaran_name" class="form-control pengeluaran_name" placeholder="Nama Pengeluaran" required>
+              </div>
+
+              <div class="form-group">
+                  <input type="text" name="pengeluaran_price" class="form-control price" placeholder="Price" required>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <input type="hidden" name="id" class="pengeluaran_id">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Update</button>
+            </div>
+          </div>
+        </div>
+       </div>
+  </form>
+
+	 <!-- Delete Product Modal-->
+ 	  <form id="add-row-form" action="/delete" method="post">
+ 	     <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+ 	        <div class="modal-dialog">
+ 	           <div class="modal-content">
+ 	               <div class="modal-header">
+									 	<h5 class="modal-title" id="myModalLabel">Hapus Pengeluaran</h5>
+ 	                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+ 	               </div>
+ 	               <div class="modal-body">
+												 <strong>Are You Sure To Delete This Data?</strong>
+ 	               </div>
+ 	               <div class="modal-footer">
+									 		<input type="hidden" name="pengeluaran_id" class="form-control pengeluaran_id2" required>
+ 	                   	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+ 	                  	<button type="submit" class="btn btn-success">Delete</button>
+ 	               </div>
+ 	      			</div>
+ 	        </div>
+ 	     </div>
+ 	 </form>
+
+<script src="/assets/js/jquery-3.3.1.js"></script>
+<script src="/assets/js/bootstrap.js"></script>
+<script>
+    $(document).ready(function(){
+			//showing data to modal for edit record
+      $('#mytable').on('click','.edit',function(){
+        var pengeluaran_id = $(this).data('id');
+        var pengeluaran_name = $(this).data('pengeluaran_name');
+        var pengeluaran_price = $(this).data('pengeluaran_price');
+        $('#EditModal').modal('show');
+        $('.pengeluaran_name').val(pengeluaran_name);
+        $('.price').val(pengeluaran_price);
+        $('.pengeluaran_id').val(pengeluaran_id);
+      });
+			//showing modal for delete record
+			$('#mytable').on('click','.delete',function(){
+        var pengeluaran_id = $(this).data('id');
+        $('#DeleteModal').modal('show');
+        $('.pengeluaran_id2').val(pengeluaran_id);
+      });
+
+    });
+</script>
+</body>
+</html>
